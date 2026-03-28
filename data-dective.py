@@ -69,19 +69,23 @@ def find_viral_tweet(tweets):
 
 def custom_sort_by_likes(tweets):
     """
-    QUEST 3: Implement Bubble Sort to sort the list 
+    QUEST 3: Implement Selection Sort to sort the list 
     by 'Likes' in descending order. NO .sort() allowed!
     """
     n = len(tweets)
     sorted_tweets = tweets.copy()
     
     for i in range(n):
-        for j in range(0, n-i-1):
-            likes1 = int(sorted_tweets[j]['Likes']) if sorted_tweets[j]['Likes'].isdigit() else 0
-            likes2 = int(sorted_tweets[j+1]['Likes']) if sorted_tweets[j+1]['Likes'].isdigit() else 0
+        max_idx = i
+        for j in range(i+1, n):
+            likes1 = int(sorted_tweets[max_idx]['Likes']) if sorted_tweets[max_idx]['Likes'].isdigit() else 0
+            likes2 = int(sorted_tweets[j]['Likes']) if sorted_tweets[j]['Likes'].isdigit() else 0
             
-            if likes1 < likes2:
-                sorted_tweets[j], sorted_tweets[j+1] = sorted_tweets[j+1], sorted_tweets[j]
+            if likes2 > likes1:
+                max_idx = j
+        
+        if max_idx != i:
+            sorted_tweets[i], sorted_tweets[max_idx] = sorted_tweets[max_idx], sorted_tweets[i]
     
     return sorted_tweets
 
@@ -104,29 +108,37 @@ def search_tweets(tweets, keyword):
     return matching_tweets
 
 if __name__ == "__main__":
-    # Load the messy data
-    dataset = load_raw_data("twitter_dataset.csv")
-    print(f"Loaded {len(dataset)} raw tweets.\n")
-    
-    # Quest 1: Clean the data
-    clean_dataset = clean_data(dataset)
-    print(f"After cleaning: {len(clean_dataset)} tweets remain.\n")
-    
-    # Quest 2: Find viral tweet
-    print("=== QUEST 2: VIRAL TWEET ===")
-    viral = find_viral_tweet(clean_dataset)
-    print()
-    
-    # Quest 3: Sort and show top 10
-    print("=== QUEST 3: TOP 10 MOST LIKED TWEETS ===")
-    sorted_tweets = custom_sort_by_likes(clean_dataset)
-    top_10 = sorted_tweets[:10]
-    for i, tweet in enumerate(top_10, 1):
-        likes = int(tweet['Likes']) if tweet['Likes'].isdigit() else 0
-        print(f"{i}. {tweet['Username']}: {likes} likes - {tweet['Text'][:60]}...")
-    print()
-    
-    # Quest 4: Search functionality
-    print("=== QUEST 4: KEYWORD SEARCH ===")
-    keyword = input("Enter a keyword to search for: ")
-    matches = search_tweets(clean_dataset, keyword)
+    try:
+        # Load the messy data
+        dataset = load_raw_data("twitter_dataset.csv")
+        print(f"Loaded {len(dataset)} raw tweets.\n")
+        
+        # Quest 1: Clean the data
+        clean_dataset = clean_data(dataset)
+        print(f"After cleaning: {len(clean_dataset)} tweets remain.\n")
+        
+        # Quest 2: Find viral tweet
+        print("=== QUEST 2: VIRAL TWEET ===")
+        viral = find_viral_tweet(clean_dataset)
+        print()
+        
+        # Quest 3: Sort and show top 10
+        print("=== QUEST 3: TOP 10 MOST LIKED TWEETS ===")
+        sorted_tweets = custom_sort_by_likes(clean_dataset)
+        top_10 = sorted_tweets[:10]
+        for i, tweet in enumerate(top_10, 1):
+            likes = int(tweet['Likes']) if tweet['Likes'].isdigit() else 0
+            print(f"{i}. {tweet['Username']}: {likes} likes - {tweet['Text'][:60]}...")
+        print()
+        
+        # Quest 4: Search functionality
+        print("=== QUEST 4: KEYWORD SEARCH ===")
+        keyword = input("Enter a keyword to search for: ")
+        matches = search_tweets(clean_dataset, keyword)
+        
+    except KeyboardInterrupt:
+        print("\n\nProgram interrupted by user. Exiting gracefully...")
+        sys.exit(0)
+    except Exception as e:
+        print(f"\nError: {e}")
+        sys.exit(1)

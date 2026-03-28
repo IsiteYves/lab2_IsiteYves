@@ -35,7 +35,7 @@ Displays the top 5 most active users by tweet count.
 
 ## Custom Sorting Algorithm
 
-The application uses **Bubble Sort** to sort tweets by likes in descending order. The algorithm works by repeatedly stepping through the list, comparing adjacent elements, and swapping them if they're in the wrong order. This process continues until the list is sorted, with the highest values "bubbling up" to the front of the list. The implementation avoids using Python's built-in sorting functions as required.
+The application uses **Selection Sort** to sort tweets by likes in descending order. The algorithm works by repeatedly finding the maximum element from the unsorted portion and placing it at the beginning. For each position, it scans through the remaining unsorted elements to find the highest value, then swaps it into place. This process continues until the entire list is sorted with the highest values at the front. The implementation avoids using Python's built-in sorting functions as required.
 
 ## Requirements
 - Python 3.x
